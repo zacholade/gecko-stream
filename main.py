@@ -1,8 +1,10 @@
 import asyncio
 from aiohttp import web
 from cv2 import VideoCapture, flip, resize, imencode
-
+import logging
 from mixins import LoggingMixin, ConfigMixin
+
+logger = logging.getLogger(__name__)
 
 
 class WebServer(ConfigMixin, LoggingMixin):
@@ -13,7 +15,7 @@ class WebServer(ConfigMixin, LoggingMixin):
 
         self._stream = VideoCapture(self.config.VIDEO_STREAM_URL)
         if not self._stream.isOpened():
-            raise RuntimeError('Cannot open camera')
+            raise RuntimeError('Cannot connect to video stream.')
 
     async def start(self) -> None:
         """
@@ -22,6 +24,7 @@ class WebServer(ConfigMixin, LoggingMixin):
         self.runner = web.AppRunner(self.app)
         await self.runner.setup()
         site = web.TCPSite(self.runner, 'localhost', self.config.WEB_SERVER_PORT)
+        self.logger.info("Running!")
         await site.start()
 
     async def handle_index(self, request) -> web.StreamResponse:
