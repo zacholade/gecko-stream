@@ -1,0 +1,4 @@
+debug = True
+
+WEB_SERVER_PORT = 5006
+VIDEO_STREAM_URL = "http://192.168.0.93:12345"
