@@ -18,10 +18,3 @@ class ConfigMixin(object):
         Returns the bots config.py file
         """
         return __import__('config')
-
-    @property
-    def scope(self):
-        """
-        Returns a string representation of the scopes
-        """
-        return " ".join(self.config.SCOPES)
